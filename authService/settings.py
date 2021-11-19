@@ -46,7 +46,7 @@ SIMPLE_JWT = {
 'BLACKLIST_AFTER_ROTATION': False,
 'UPDATE_LAST_LOGIN': True,
 'ALGORITHM': 'HS256',
-'USER_ID_FIELD': 'id',
+'USER_ID_FIELD': 'num_doc_id',
 'USER_ID_CLAIM': 'user_id',
 }
 AUTH_USER_MODEL = 'authApp.User'
