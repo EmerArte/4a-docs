@@ -22,16 +22,6 @@ class UserDetailView(generics.ListCreateAPIView):
 class UsuarioDetallesView(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UsuarioSerializer
-    permission_classes = (IsAuthenticated,)
-    def get(self, request, *args, **kwargs):
-        token = request.META.get('HTTP_AUTHORIZATION')[7:]
-        tokenBackend = TokenBackend(algorithm=settings.SIMPLE_JWT['ALGORITHM'])
-        valid_data = tokenBackend.decode(token, verify=False)
-        print(valid_data)
-        if valid_data['user_id'] != kwargs['pk']:
-            stringResponse = {'detail': 'No autorizado'}
-            return Response(stringResponse,status=status.HTTP_401_UNAUTHORIZED)
-        return super().get(request, *args, **kwargs)
 
 #VALIDAR EL TOKEN DEVUELVE EL ID DEL PROPIETARIO DEL TOKEN
 class VerifyTokenView(TokenVerifyView):
@@ -50,22 +40,7 @@ class VerifyTokenView(TokenVerifyView):
 class UserUpdateAndDestoyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class=UsuarioSerializer
-    permission_classes = (IsAuthenticated,)
     def delete(self, request, *args, **kwargs):
-        token = request.META.get('HTTP_AUTHORIZATION')[7:]
-        tokenBackend = TokenBackend(algorithm=settings.SIMPLE_JWT['ALGORITHM'])
-        valid_data = tokenBackend.decode(token, verify=False)
-        if valid_data['user_id'] != kwargs['pk']:
-            stringResponse = {'detail': 'No autorizado'}
-            return Response(stringResponse,status=status.HTTP_401_UNAUTHORIZED)
         datos = User.objects.filter(num_doc_id = kwargs['pk'])
         datos.delete()
         return Response({'mensaje':'Usuario eliminado correctamente'}, status=status.HTTP_200_OK)
-    def put(self, request, *args, **kwargs):
-        token = request.META.get('HTTP_AUTHORIZATION')[7:]
-        tokenBackend = TokenBackend(algorithm=settings.SIMPLE_JWT['ALGORITHM'])
-        valid_data = tokenBackend.decode(token, verify=False)
-        if valid_data['user_id'] != kwargs['pk']:
-            stringResponse = {'detail': 'No autorizado, solo el propietario de la cuenta puede actualizar su cuenta'}
-            return Response(stringResponse,status=status.HTTP_401_UNAUTHORIZED)
-        return super().put(request, *args, **kwargs)
