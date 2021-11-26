@@ -1,7 +1,6 @@
 from rest_framework import generics, status
 from authApp.models.user import User
 from authApp.serializer.userSerializer import UsuarioSerializer
-from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenVerifyView
@@ -12,7 +11,6 @@ from rest_framework_simplejwt.serializers import TokenVerifySerializer
 class UserDetailView(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UsuarioSerializer
-    permission_classes = (IsAuthenticated,)
     def post(self, request, *args, **kwargs):
         serializer = UsuarioSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
