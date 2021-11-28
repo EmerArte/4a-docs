@@ -53,7 +53,7 @@ public class Libros {
     public Float getPuntuacion() {
         return puntuacion;
     }
-    public void setPuntuacion(Float puntuaciontuacion) {
+    public void setPuntuacion(Float puntuacion) {
         this.puntuacion = puntuacion;
     }
 
