@@ -10,7 +10,6 @@ public class Alquiler {
     private Date fecha_de_inicio;
     private Boolean disponible_dos;
 
-
     public Alquiler(String usuario, String libro, Date fecha_de_inicio) {
         this.usuario = usuario;
         this.libro = libro;
