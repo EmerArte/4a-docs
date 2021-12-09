@@ -1,28 +1,34 @@
 package com.ciclo4.msadminlibreria.models;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import java.util.Date;
 
-
 public class Alquiler {
     @Id
+    private String id;
     private String usuario;
     private String libro;
     private Date fecha_de_inicio;
-    private Boolean disponible_dos;
+    private Date fecha_de_fin;
+    private boolean activo;
 
-    public Alquiler(String usuario, String libro, Date fecha_de_inicio) {
+    public Alquiler(String id, String usuario, String libro, Date fecha_de_inicio, Date fecha_de_fin, boolean activo) {
+        this.id = id;
         this.usuario = usuario;
         this.libro = libro;
         this.fecha_de_inicio = fecha_de_inicio;
-        this. disponible_dos = disponible_dos;
+        this.fecha_de_fin = fecha_de_fin;
+        this.activo = activo;
     }
 
-    public Boolean getDisponible_dos() {
-        return disponible_dos;
+    public String getId() {
+        return id;
     }
 
-    public void setDisponible_dos(Boolean disponible_dos) {
-        this.disponible_dos = disponible_dos;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUsuario() {
@@ -47,5 +53,21 @@ public class Alquiler {
 
     public void setFecha_de_inicio(Date fecha_de_inicio) {
         this.fecha_de_inicio = fecha_de_inicio;
+    }
+
+    public Date getFecha_de_fin() {
+        return fecha_de_fin;
+    }
+
+    public void setFecha_de_fin(Date fecha_de_fin) {
+        this.fecha_de_fin = fecha_de_fin;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 }

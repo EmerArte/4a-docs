@@ -7,4 +7,5 @@ import java.util.List;
 public interface AlquilerRepository extends MongoRepository<Alquiler, String> {
     List<Alquiler> findByUsuario (String usuario);
     List<Alquiler> findByLibro (String libro);
+    List<Alquiler> findAlquilerByActivoTrue();
 }
