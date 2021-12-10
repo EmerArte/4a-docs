@@ -46,14 +46,6 @@ public class LibrosController {
         librosRepository.deleteById(id);
         return new ResponseEntity<String>("Libro eliminado correctamente", HttpStatus.OK);
     }
-//    @PutMapping("/libros/{idlibro}")
-//    Libros updateLibros(@RequestBody Libros libro, @RequestParam String idlibro){
-//        if(librosRepository.findById(idlibro)!=null){
-//            return librosRepository.save(libro);
-//        }else{
-//            return new LibrosNotFoundException("No se encontro una cuenta con el username: " + libro);
-//        }
-//
-//    }
+
 
 }

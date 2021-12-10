@@ -1,9 +1,9 @@
 package com.ciclo4.msadminlibreria.controllers;
 
-import com.ciclo4.msadminlibreria.exceptions.LibrosNotFoundException;
 import com.ciclo4.msadminlibreria.exceptions.AlquilerNoDisponibleException;
+import com.ciclo4.msadminlibreria.exceptions.LibrosNotFoundException;
+import com.ciclo4.msadminlibreria.models.alquilerRequest;
 import com.ciclo4.msadminlibreria.models.Libros;
-import com.ciclo4.msadminlibreria.models.Alquiler;
 import com.ciclo4.msadminlibreria.repositories.AlquilerRepository;
 import com.ciclo4.msadminlibreria.repositories.LibrosRepository;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +23,7 @@ public class AlquilerController {
     }
 
     @PostMapping("/alquiler")
-    Alquiler newAlquiler(@RequestBody Alquiler alquiler) {
+    alquilerRequest newAlquiler(@RequestBody alquilerRequest alquiler) {
         Libros librosOrigin =
                 librosRepository.findById(alquiler.getUsuario()).orElse(null);
         Libros librosDestinity =
@@ -34,41 +34,34 @@ public class AlquilerController {
             throw new LibrosNotFoundException("No se encontro un libro con el titulo: " + alquiler.getLibro());
         if (librosOrigin.getDisponible() == alquiler.isActivo())
             throw new AlquilerNoDisponibleException("Libro no disponible");
-        /// accountOrigin.setBalance(accountOrigin.getBalance() - transaction.getValue());
-        ///librosOrigin.setLastChange(new Date());
-        //librosRepository.save(librosOrigin);
-        ///accountDestinity.setBalance(accountDestinity.getBalance() +
-        //transaction.getValue());
-        //accountDestinity.setLastChange(new Date());
-        //accountRepository.save(accountDestinity);
         alquiler.setFecha_de_inicio(new Date());
         return alquilerRepository.save(alquiler);
     }
 
-    @GetMapping("/alquiler/{usuario}")
-    List<Alquiler> userAlquiler(@PathVariable String usuario) {
+    @GetMapping("/alquier/{usuario}")
+    List<alquilerRequest> userAlquiler(@PathVariable String usuario) {
         Libros userLibros = librosRepository.findById(usuario).orElse(null);
         if (userLibros == null)
             throw new LibrosNotFoundException("No se encontro usuario: " + usuario);
-        List<Alquiler> alquilerUsuario =
+        List<alquilerRequest> alquilerUsuario =
                 alquilerRepository.findByUsuario(usuario);
-        List<Alquiler> alquilerLibro =
+        List<alquilerRequest> alquilerLibro =
                 alquilerRepository.findByLibro(usuario);
-        List<Alquiler> alquilers = Stream.concat(alquilerUsuario.stream(),
+        List<alquilerRequest> alquilers = Stream.concat(alquilerUsuario.stream(),
                 alquilerLibro.stream()).collect(Collectors.toList());
         return alquilers;
     }
     @DeleteMapping("/alquiler/delete/{id}")
-    Alquiler delete(@PathVariable String id){
-        Alquiler alquiler = alquilerRepository.findById(id).orElse(null);
+    alquilerRequest delete(@PathVariable String id){
+        alquilerRequest alquiler = alquilerRepository.findById(id).orElse(null);
         if (alquiler == null)
             throw new LibrosNotFoundException("No se encontro alquiler: " + id);
         alquilerRepository.deleteById(id);
         return alquiler;
     }
     @GetMapping("/alquiler/vencidos")
-    List<Alquiler> getAlquilerVencidos(){
-        List<Alquiler> alquilers = alquilerRepository.findAlquilerByActivoTrue();
+    List<alquilerRequest> getAlquilerVencidos(){
+        List<alquilerRequest> alquilers = alquilerRepository.findAlquilerByActivoTrue();
         return alquilers;
     }
 

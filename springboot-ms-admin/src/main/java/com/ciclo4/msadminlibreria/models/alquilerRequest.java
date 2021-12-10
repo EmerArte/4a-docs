@@ -1,11 +1,8 @@
 package com.ciclo4.msadminlibreria.models;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import java.util.Date;
 
-public class Alquiler {
+public class alquilerRequest {
     @Id
     private String id;
     private String usuario;
@@ -14,7 +11,7 @@ public class Alquiler {
     private Date fecha_de_fin;
     private boolean activo;
 
-    public Alquiler(String id, String usuario, String libro, Date fecha_de_inicio, Date fecha_de_fin, boolean activo) {
+    public alquilerRequest(String id, String usuario, String libro, Date fecha_de_inicio, Date fecha_de_fin, boolean activo) {
         this.id = id;
         this.usuario = usuario;
         this.libro = libro;
