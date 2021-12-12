@@ -7,6 +7,12 @@ import com.ciclo4.msadminlibreria.models.Libros;
 import com.ciclo4.msadminlibreria.repositories.AlquilerRepository;
 import com.ciclo4.msadminlibreria.repositories.LibrosRepository;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +22,8 @@ import java.util.stream.Stream;
 public class AlquilerController {
     private final LibrosRepository librosRepository;
     private final AlquilerRepository alquilerRepository;
-
+    DateFormat formateadorFechaCorta = DateFormat.getDateInstance(DateFormat.SHORT);
+    Calendar calendar = Calendar.getInstance();
     public AlquilerController(LibrosRepository librosRepository, AlquilerRepository alquilerRepository) {
         this.librosRepository = librosRepository;
         this.alquilerRepository = alquilerRepository;
@@ -24,32 +31,30 @@ public class AlquilerController {
 
     @PostMapping("/alquiler")
     alquilerRequest newAlquiler(@RequestBody alquilerRequest alquiler) {
-        Libros librosOrigin =
-                librosRepository.findById(alquiler.getUsuario()).orElse(null);
+        Date now = new Date();
         Libros librosDestinity =
                 librosRepository.findById(alquiler.getLibro()).orElse(null);
-        if (librosOrigin == null)
-            throw new LibrosNotFoundException("No se encontro un libro con el titulo: " + alquiler.getUsuario());
         if (librosDestinity == null)
-            throw new LibrosNotFoundException("No se encontro un libro con el titulo: " + alquiler.getLibro());
-        if (librosOrigin.getDisponible() == alquiler.isActivo())
+            throw new LibrosNotFoundException("El libro seleccionado no se encuentra en la db : " + alquiler.getLibro());
+        if (!librosDestinity.getDisponible())
             throw new AlquilerNoDisponibleException("Libro no disponible");
-        alquiler.setFecha_de_inicio(new Date());
+        alquiler.setActivo(true);
+        alquiler.setFecha_de_inicio(formateadorFechaCorta.format(now));
+        calendar.setTime(now);
+        calendar.add(Calendar.DAY_OF_YEAR, 10);
+        alquiler.setFecha_de_fin(formateadorFechaCorta.format(calendar.getTime()));
         return alquilerRepository.save(alquiler);
     }
 
-    @GetMapping("/alquier/{usuario}")
+    @GetMapping("/alquiler/{usuario}")
     List<alquilerRequest> userAlquiler(@PathVariable String usuario) {
-        Libros userLibros = librosRepository.findById(usuario).orElse(null);
-        if (userLibros == null)
-            throw new LibrosNotFoundException("No se encontro usuario: " + usuario);
+
         List<alquilerRequest> alquilerUsuario =
                 alquilerRepository.findByUsuario(usuario);
-        List<alquilerRequest> alquilerLibro =
-                alquilerRepository.findByLibro(usuario);
-        List<alquilerRequest> alquilers = Stream.concat(alquilerUsuario.stream(),
-                alquilerLibro.stream()).collect(Collectors.toList());
-        return alquilers;
+        if(alquilerUsuario.isEmpty()){
+            throw new AlquilerNoDisponibleException("No se tienes ningun libro asociado");
+        }
+        return alquilerUsuario;
     }
     @DeleteMapping("/alquiler/delete/{id}")
     alquilerRequest delete(@PathVariable String id){
@@ -59,10 +64,29 @@ public class AlquilerController {
         alquilerRepository.deleteById(id);
         return alquiler;
     }
-    @GetMapping("/alquiler/vencidos")
-    List<alquilerRequest> getAlquilerVencidos(){
-        List<alquilerRequest> alquilers = alquilerRepository.findAlquilerByActivoTrue();
+    @GetMapping("/alquiler/activos")
+    List<alquilerRequest> getAlquieleresActivos(){
+        List<alquilerRequest> alquilers = alquilerRepository.findByActivoTrue();
         return alquilers;
+    }
+    @GetMapping("/alquiler/pendientes")
+    List<alquilerRequest> alquileresPendientesPorFinalizar() throws ParseException {
+        Date now = new Date();
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        List<alquilerRequest> pendientes = new ArrayList<>();
+        List<alquilerRequest> alquilers = alquilerRepository.findByActivoTrue();
+        if(!alquilers.isEmpty()){
+            for (alquilerRequest a:
+                    alquilers) {
+                Date fechaFinFormat = formato.parse(a.getFecha_de_fin());
+                if(a.isActivo() && now.before(fechaFinFormat)){
+                    pendientes.add(a);
+                }
+            }
+            return pendientes;
+        }
+       return null;
+
     }
 
 }

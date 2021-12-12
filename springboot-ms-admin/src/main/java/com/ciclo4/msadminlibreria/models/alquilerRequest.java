@@ -7,11 +7,11 @@ public class alquilerRequest {
     private String id;
     private String usuario;
     private String libro;
-    private Date fecha_de_inicio;
-    private Date fecha_de_fin;
+    private String fecha_de_inicio;
+    private String fecha_de_fin;
     private boolean activo;
 
-    public alquilerRequest(String id, String usuario, String libro, Date fecha_de_inicio, Date fecha_de_fin, boolean activo) {
+    public alquilerRequest(String id, String usuario, String libro, String fecha_de_inicio, String fecha_de_fin, boolean activo) {
         this.id = id;
         this.usuario = usuario;
         this.libro = libro;
@@ -44,19 +44,19 @@ public class alquilerRequest {
         this.libro = libro;
     }
 
-    public Date getFecha_de_inicio() {
+    public String getFecha_de_inicio() {
         return fecha_de_inicio;
     }
 
-    public void setFecha_de_inicio(Date fecha_de_inicio) {
+    public void setFecha_de_inicio(String fecha_de_inicio) {
         this.fecha_de_inicio = fecha_de_inicio;
     }
 
-    public Date getFecha_de_fin() {
+    public String getFecha_de_fin() {
         return fecha_de_fin;
     }
 
-    public void setFecha_de_fin(Date fecha_de_fin) {
+    public void setFecha_de_fin(String fecha_de_fin) {
         this.fecha_de_fin = fecha_de_fin;
     }
 

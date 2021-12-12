@@ -23,6 +23,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     nombre = models.CharField('nombre', max_length = 30, null=False )
+    admin = models.BooleanField('admin', default=False)
     apellido = models.CharField('apellido', max_length = 30, null=False)
     password = models.CharField('password', max_length = 256, null=False)
     telefono = models.BigIntegerField('telefono', unique=True)
