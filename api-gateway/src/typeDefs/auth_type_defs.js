@@ -8,33 +8,33 @@ type Access {
     access: String!
 }
 input CredentialsInput {
-    num_doc_id: Long!
+    num_doc_id: Float!
     password: String!
 }
 input SignUpInput {
-    num_doc_id: Long!
-    password: String!
-    nombre: String!
-    telefono: Long!
-    tipo_doc_id: String!
-}
-type UserDetail {   
-    num_doc_id: Long!
+    num_doc_id: Int!
     password: String!
     nombre: String!
     apellido: String!
-    telefono: Long!
+    telefono: Float!
     tipo_doc_id: String!
-    
-
+}
+type UserDetail {   
+    num_doc_id: Int!
+    password: String!
+    nombre: String!
+    apellido: String!
+    telefono: Float!
+    tipo_doc_id: String!
 }
 type Mutation {
-    signUpUser(userInput :SignUpInput): Tokens!
+    signUpUser(userInput :SignUpInput): UserDetail!
     logIn(credentials: CredentialsInput!): Tokens!
     refreshToken(refresh: String!): Access!
+    updateUser(num_doc_id: Float!, userInput :SignUpInput): UserDetail!
 }
 type Query {
-    userDetailByNum_doc_id(userNum_doc_id: Long!): UserDetail!
+    getUserById(num_doc_id: Float!): UserDetail 
 }
 `;
 module.exports = authTypeDefs;

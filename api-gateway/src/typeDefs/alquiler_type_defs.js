@@ -4,8 +4,8 @@ type Alquiler {
     id: String!
     usuario: String!
     libro: String!
-    fecha_de_inicio: Date!
-    fecha_de_fin: Date!
+    fecha_de_inicio: String!
+    fecha_de_fin: String!
     activo: Boolean!
 }
 input AlquilerInput {
@@ -14,10 +14,13 @@ input AlquilerInput {
     libro: String!
 }
 extend type Query {
-    alquilerById(id: String!): [Alquiler]
+    alquilerByUserId(userid: String!): [Alquiler]
+    getAlquilerActivos: [Alquiler]
+    getAlquilerPendientes: [Alquiler]
 }
 extend type Mutation {
     createAlquiler(alquiler: AlquilerInput!): Alquiler
+    deleteAlquilerById(id: String!): String
 }
 `;
 module.exports = alquilerTypeDefs;

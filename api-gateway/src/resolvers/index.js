@@ -1,6 +1,6 @@
-const accountResolver = require('./account_resolver');
-const transactionResolver = require('./transaction_resolver');
+const librosResolver = require('./libros_resolver');
+const alquilerResolver = require('./alquiler_resolver');
 const authResolver = require('./auth_resolver');
 const lodash = require('lodash');
-const resolvers = lodash.merge(accountResolver, transactionResolver, authResolver);
+const resolvers = lodash.merge(librosResolver, alquilerResolver, authResolver);
 module.exports = resolvers;

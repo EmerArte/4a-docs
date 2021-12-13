@@ -25,7 +25,7 @@ public class LibrosController {
     @GetMapping("/libros/{titulo}")
     Libros getLibros(@PathVariable String titulo){
         String sent = titulo.replace("_"," ");
-        return librosRepository.findById(sent).orElseThrow(() -> new LibrosNotFoundException("No se encontro una cuenta con el username: " + titulo));
+        return librosRepository.findLibrosByTitulo(sent);
     }
     @PostMapping("/libros")
     Libros newLibros(@RequestPart MultipartFile file, @ModelAttribute Libros libros){

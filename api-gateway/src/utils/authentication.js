@@ -6,6 +6,7 @@ const authentication = async ({ req }) => {
     if (token == '')
         return { userIdToken: null }
     else {
+        console.log("Auth init")
         try {
             let requestOptions = {
                 method: 'POST', headers: { "Content-Type": "application/json" },
@@ -15,10 +16,9 @@ const authentication = async ({ req }) => {
                 `${serverConfig.auth_api_url}/verifyToken/`,
                 requestOptions)
             if (response.status != 200) {
-                console.log(response)
                 throw new ApolloError(`SESION INACTIVA - ${401}` + response.status, 401)
             }
-            return { userIdToken: (await response.json()).UserId };
+            return { userIdToken: (await response.json()) };
         }
         catch (error) {
             throw new ApolloError(`TOKEN ERROR: ${500}: ${error}`, 500);

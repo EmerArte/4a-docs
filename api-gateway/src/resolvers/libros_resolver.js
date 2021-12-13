@@ -1,13 +1,21 @@
-const accountResolver = {
+const librosResolver = {
     Query: {
-        accountByUsername: async (_, { username }, { dataSources, userIdToken }) => {
-            usernameToken = (await dataSources.authAPI.getUser(userIdToken)).username
-            if (username == usernameToken)
-                return await dataSources.accountAPI.accountByUsername(username)
-            else
-                return null
+        librosByID: async (_, { titulo }, { dataSources}) => {
+            return await dataSources.adminLibreria.getLibrosById(titulo)
+        },
+        allLibros: async (_,__,{dataSources}) => {
+            return await dataSources.adminLibreria.getAllLibros()
         },
     },
-    Mutation: {}
+    Mutation: {
+        newLibros: async (_, { libro }, { dataSources }) => {
+            console.log(dataSources)
+            return await dataSources.adminLibreria.newLibros(libro);
+        },
+        deleteLibroById: async (_, { id }, { dataSources }) => {
+            console.log(dataSources)
+            return await dataSources.adminLibreria.deleteLibroById(id);
+        },
+    }
 };
-module.exports = accountResolver;
+module.exports = librosResolver;
