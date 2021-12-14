@@ -24,7 +24,7 @@ class AdminLibreria extends RESTDataSource {
         alquiler = new Object(JSON.parse(JSON.stringify(alquiler)));
         return await this.post('/alquiler', alquiler);
     }
-    async getAlquilerByUserId(userid) {
+    async alquilerByUserId(userid) {
         return await this.get(`/alquiler/${userid}`);
     }
     async deleteAlquilerById(id) {

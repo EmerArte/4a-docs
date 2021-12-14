@@ -15,12 +15,12 @@ const authentication = async ({ req }) => {
                 `${serverConfig.auth_api_url}/verifyToken/`,
                 requestOptions)
             if (response.status != 200) {
-                throw new ApolloError(`SESION INACTIVA - ${401}` + response.status, 401)
+                throw new ApolloError(`SESION INACTIVA` + response.status)
             }
             return { userIdToken: (await response.json()) };
         }
         catch (error) {
-            throw new ApolloError(`TOKEN ERROR: ${500}: ${error}`, 500);
+            throw new ApolloError(`TOKEN ERROR: ${error}`);
         }
     }
 }

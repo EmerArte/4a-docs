@@ -1,9 +1,8 @@
 const alquilerResolver = {
     Query: {
-        alquilerByUserId: async (_, { userid }, { dataSources, userIdToken }) => {
-            usernameToken = (await dataSources.authAPI.getUser(userIdToken))
-            if (userid == usernameToken)
-                return dataSources.adminLibreria.getAlquilerByUserId(id)
+        getAlquilerByUserId: (_, { userid }, { dataSources, userIdToken }) => {
+            if (userid == userIdToken.num_doc_id)
+                return dataSources.adminLibreria.alquilerByUserId(userid)
             else
                 return null
         },
@@ -16,8 +15,7 @@ const alquilerResolver = {
     },
     Mutation: {
         createAlquiler: async (_, { alquiler }, { dataSources, userIdToken }) => {
-            usernameToken = (await dataSources.authAPI.getUser(userIdToken))
-            if (alquiler.usuario == usernameToken)
+            if (alquiler.usuario == userIdToken.num_doc_id)
                 return dataSources.adminLibreria.newAlquiler(alquiler)
             else
                 return null

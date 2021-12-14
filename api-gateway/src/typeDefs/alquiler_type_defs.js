@@ -14,7 +14,7 @@ input AlquilerInput {
     libro: String!
 }
 extend type Query {
-    alquilerByUserId(userid: String!): [Alquiler]
+    getAlquilerByUserId(userid: String!): [Alquiler]
     getAlquilerActivos: [Alquiler]
     getAlquilerPendientes: [Alquiler]
 }
