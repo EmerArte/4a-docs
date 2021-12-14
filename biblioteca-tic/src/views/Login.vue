@@ -1,6 +1,6 @@
 <template>
   <v-container grid-list-xs>
-    <v-card outlined max-width="700" class="mx-auto">
+    <v-card outlined max-width="700" class="mx-auto" :loading="card">
       <div class="display-1 font-weight-black text-center my-5">Login</div>
       <v-divider class="mb-12"></v-divider>
       <div class="formulario">
@@ -31,7 +31,7 @@
               <v-btn color="primary" type="submit" block> login </v-btn>
             </v-col>
             <v-col cols="6">
-              <v-btn outlined color="primary" block> Registrarse </v-btn>
+              <v-btn outlined color="primary" block to="/signup"> Registrarse </v-btn>
             </v-col>
           </v-row>
         </v-form>
@@ -48,10 +48,12 @@ export default {
       show1: false,
       num_doc_id: null,
       password: "",
+      card:false,
     };
   },
   methods: {
     login: async function () {
+      this.card= true;
       await this.$apollo
         .mutate({
           mutation: gql`
@@ -75,7 +77,9 @@ export default {
             token_access: result.data.logIn.access,
             token_refresh: result.data.logIn.refresh,
           };
-          this.$emit("completedLogIn", dataLogIn);
+          localStorage.setItem("access", dataLogIn.token_access)
+          localStorage.setItem("refresh", dataLogIn.token_refresh)
+          this.$router.push("/")
         })
         .catch((error) => {
            this.$swal.fire({
@@ -85,6 +89,7 @@ export default {
             confirmButtonText: "Try Again",
           });
         });
+        this.card= false;
     },
   },
 };

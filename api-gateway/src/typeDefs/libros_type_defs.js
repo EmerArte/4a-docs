@@ -18,8 +18,17 @@ input LibroInput {
     imagen: String!
     puntuacion: Float!
 }
+type Libroget {
+    id: String
+    titulo: String!
+    descripcion: String!
+    disponible: String!
+    autor: String!
+    imagen: String!
+    puntuacion: Float!
+}
 extend type Query {
-    librosByID(id: String!): Libros
+    librosByID(titulo: String!): Libroget
     allLibros: [Libros]
 
 }

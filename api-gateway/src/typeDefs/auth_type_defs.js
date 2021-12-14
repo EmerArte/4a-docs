@@ -28,7 +28,7 @@ type UserDetail {
     tipo_doc_id: String!
 }
 type Mutation {
-    signUpUser(userInput :SignUpInput): UserDetail!
+    signUpUser(userInput :SignUpInput!): UserDetail!
     logIn(credentials: CredentialsInput!): Tokens!
     refreshToken(refresh: String!): Access!
     updateUser(num_doc_id: Float!, userInput :SignUpInput): UserDetail!

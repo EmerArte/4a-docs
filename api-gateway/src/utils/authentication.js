@@ -6,7 +6,6 @@ const authentication = async ({ req }) => {
     if (token == '')
         return { userIdToken: null }
     else {
-        console.log("Auth init")
         try {
             let requestOptions = {
                 method: 'POST', headers: { "Content-Type": "application/json" },

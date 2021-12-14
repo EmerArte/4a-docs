@@ -4,35 +4,42 @@
 
     <v-spacer></v-spacer>
     <div v-if="logged">
-        <div v-if="admin">
+      <div v-if="admin">
         <v-btn text> Dashboard </v-btn>
-        </div>
-        <div v-else>
+      </div>
+      <div v-else>
         <v-btn text> home </v-btn>
         <v-btn text> Perfil </v-btn>
-        </div>
+        <v-btn text @click="logout"> Logout </v-btn>
+      </div>
     </div>
     <div v-else>
-    <v-btn text to="/"> home </v-btn>
-    <v-btn text to="/login"> Login </v-btn>
-    <v-btn text to="/signup"> SignUp </v-btn>
-    <v-btn text to="/about"> Nosotros </v-btn>
+      <v-btn text to="/"> home </v-btn>
+      <v-btn text to="/login"> Login </v-btn>
+      <v-btn text to="/signup"> SignUp </v-btn>
+      <v-btn text to="/about"> Nosotros </v-btn>
     </div>
-    
-    
-
   </v-app-bar>
 </template>
 
 <script>
 export default {
-    data(){
-        return{
-            logged:false,
-            admin:false
-
-        }
+  data() {
+    return {
+      logged: false,
+      admin: false,
+    };
+  },
+  methods:{
+    logout(){
+      localStorage.clear()
     }
+  },
+  mounted() {
+    if (localStorage.getItem("access")) {
+      this.logged = true;
+    }
+  },
 };
 </script>
 

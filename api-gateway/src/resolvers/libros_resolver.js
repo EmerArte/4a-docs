@@ -1,6 +1,6 @@
 const librosResolver = {
     Query: {
-        librosByID: async (_, { titulo }, { dataSources}) => {
+        librosByID: async (_, { titulo }, { dataSources }) => {
             return await dataSources.adminLibreria.getLibrosById(titulo)
         },
         allLibros: async (_,__,{dataSources}) => {
