@@ -3,13 +3,13 @@
     <v-toolbar-title>Biblioteca</v-toolbar-title>
 
     <v-spacer></v-spacer>
-    <div v-if="logged">
+    <div v-if="this.$store.state.isLoggin">
       <div v-if="admin">
         <v-btn text> Dashboard </v-btn>
       </div>
       <div v-else>
-        <v-btn text> home </v-btn>
-        <v-btn text> Perfil </v-btn>
+        <v-btn text to="/"> home </v-btn>
+        <v-btn text to="/perfil"> Perfil </v-btn>
         <v-btn text @click="logout"> Logout </v-btn>
       </div>
     </div>
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
   data() {
     return {
@@ -30,17 +31,13 @@ export default {
       admin: false,
     };
   },
-  methods:{
+ methods:{
+    ...mapActions(["logearse"]),
     logout(){
-      localStorage.clear()
-      this.$router.push("/login")
+        this.logearse("asd")
+        this.$router.push("/login")
     }
-  },
-  mounted() {
-    if (localStorage.getItem("access")) {
-      this.logged = true;
-    }
-  },
+  }
 };
 </script>
 

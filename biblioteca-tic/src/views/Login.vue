@@ -42,6 +42,7 @@
 
 <script>
 import gql from "graphql-tag";
+import { mapActions } from 'vuex';
 export default {
   data() {
     return {
@@ -49,10 +50,13 @@ export default {
       num_doc_id: null,
       password: "",
       card:false,
+      mensaje: false,
     };
   },
   methods: {
+    ...mapActions(["logearse"]),
     login: async function () {
+      localStorage.clear()
       this.card= true;
       await this.$apollo
         .mutate({
@@ -79,6 +83,7 @@ export default {
           };
           localStorage.setItem("access", dataLogIn.token_access)
           localStorage.setItem("refresh", dataLogIn.token_refresh)
+          this.logearse("exito"),
           this.$router.push("/")
         })
         .catch((error) => {
@@ -91,7 +96,15 @@ export default {
         });
         this.card= false;
     },
+    created(){
+    if(this.$store.state.isLoggin){
+      this.$router.push("/perfil")
+    }else{
+      this.logearse("err")
+    }  
+    }
   },
+  
 };
 </script>
 

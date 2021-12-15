@@ -43,7 +43,7 @@
                 label="Teléfono"
                 outlined
                 type="number"
-                v-model="num_doc_id"
+                v-model="telefono"
               ></v-text-field>
             </v-col>
             <v-col cols="12">
@@ -79,6 +79,7 @@ export default {
       show1: false,
       tipo_doc_id: "",
       nombre: "",
+      telefono:"",
       apellido: "",
       num_doc_id: null,
       password: "",
@@ -102,7 +103,7 @@ export default {
             }
           `,
           variables: {
-            credentials: {
+            userInput: {
               num_doc_id: parseInt(this.num_doc_id, 10),
               password: this.password,
               tipo_doc_id: this.tipo_doc_id,
@@ -113,21 +114,13 @@ export default {
           },
         })
         .then((result) => {
-          let userData = {
-            tipo_doc_id: result.data.signUpUser.tipo_doc_id,
-            telefono: result.data.signUpUser.telefono,
-            nombre: result.data.signUpUser.nombre,
-            apellido: result.data.signUpUser.apellido,
-            num_doc_id: result.data.signUpUser.num_doc_id,
-          };
-          console.log(userData);
-          this.Swal.fire({
+          this.$swal.fire({
             position: "Center",
             icon: "success",
-            title: userData.nombre + " Te has registrado correctamente",
+            title:  result.data.signUpUser.nombre + " Te has registrado correctamente",
             showConfirmButton: false,
             timer: 1500,
-          });
+          })
           this.$router.push("/login");
         })
         .catch((error) => {
