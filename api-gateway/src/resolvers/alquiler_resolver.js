@@ -1,6 +1,6 @@
 const alquilerResolver = {
     Query: {
-        getAlquilerByUserId: (_, { userid }, { dataSources, userIdToken }) => {
+        getAlquilerByUserId: async (_, { userid }, { dataSources, userIdToken }) => {
             if (userid == userIdToken.num_doc_id)
                 return dataSources.adminLibreria.alquilerByUserId(userid)
             else

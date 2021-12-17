@@ -19,6 +19,14 @@ input SignUpInput {
     telefono: Float!
     tipo_doc_id: String!
 }
+input UpdateInput {
+    num_doc_id: Int
+    password: String
+    nombre: String
+    apellido: String
+    telefono: Float
+    tipo_doc_id: String
+}
 type UserDetail {   
     num_doc_id: Int!
     password: String!

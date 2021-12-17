@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="my-4">
     <v-container class="wi-40">
       <v-card elevation="2">
         <v-row>
@@ -12,8 +12,6 @@
               <boton-editar-cuenta
                 :nombre="nombre"
                 :apellido="apellido"
-                :contrasena="contraseña"
-                :edad="edad"
                 :num_doc="num_id"
                 :telefono="telefono"
                 :tipodedoc="tipo_doc"
@@ -55,6 +53,19 @@
         <v-divider></v-divider>
       </v-card>
     </v-container>
+    <v-container class="wi-40">
+      <v-card elevation="2">
+        <v-card-title>Mis Reservas</v-card-title>
+        <v-card-text>
+          <v-data-table
+            :headers="headers"
+            :items="alquilers"
+            :items-per-page="5"
+            class="elevation-1"
+          ></v-data-table>
+        </v-card-text>
+      </v-card>
+    </v-container>
   </div>
 </template>
 
@@ -64,10 +75,37 @@ import BotonEditarCuenta from "../components/BotonEditarCuenta.vue";
 import jwt_decode from "jwt-decode";
 import gql from "graphql-tag";
 export default {
-   name: "Home",
+  name: "Home",
   components: { BotonEliminarCuenta, BotonEditarCuenta },
   data() {
     return {
+      headers: [
+        {
+          text: "Id",
+          align: "start",
+          sortable: false,
+          value: "id",
+        },
+        {
+          text: "Id del Libro",
+          align: "start",
+          sortable: false,
+          value: "libro",
+        },
+        {
+          text: "Fecha de inicio",
+          align: "start",
+          sortable: false,
+          value: "fecha_de_inicio",
+        },
+        {
+          text: "Fecha de finalización",
+          align: "start",
+          sortable: false,
+          value: "fecha_de_fin",
+        },
+      ],
+      alquilers:[],
       vector: [],
       user_id: 0,
       nombre: "",
@@ -80,7 +118,7 @@ export default {
   },
   mounted() {
     this.user_id = jwt_decode(localStorage.getItem("refresh")).user_id;
-   this.$apollo
+    this.$apollo
       .query({
         query: gql`
           query ($numDocId: Float!) {
@@ -110,11 +148,35 @@ export default {
         console.log(err);
         this.$router.push("/login");
       });
-      
+    this.user_id = jwt_decode(localStorage.getItem("refresh")).user_id;
+    this.$apollo
+      .query({
+        query: gql`
+          query ($userid: String!) {
+            getAlquilerByUserId(userid: $userid) {
+              id
+              usuario
+              fecha_de_inicio
+              libro
+              fecha_de_fin
+              activo
+            }
+          }
+        `,
+        variables: {
+          userid: ''+this.user_id,
+        },
+      })
+      .then((result) => {
+        this.alquilers =  result.data.getAlquilerByUserId
+        console.log(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
-}
+};
 </script>
 
 <style>
-
 </style>
